@@ -1,12 +1,17 @@
 import logging
+import sys
 
-logger = logging.getLogger('lab4')
-# logger = logging.Logger("lab4")
-# logger.setLevel(logging.INFO)
+LOG_FORMAT = "%(asctime)s %(levelname)s %(module)s - %(funcName)s: %(message)s"
+DATE_FORMAT = "%m-%d %H:%M"
 
-streamHandler = logging.StreamHandler()
-streamHandler.setLevel(logging.INFO)
+logging.basicConfig(filename="app.log", level=logging.INFO, filemode="w",
+                    format=LOG_FORMAT, datefmt=DATE_FORMAT)
 
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-streamHandler.setFormatter(formatter)
-logger.addHandler(streamHandler)
+stream_handler = logging.StreamHandler(sys.stdout)
+stream_handler.setFormatter(logging.Formatter(fmt=LOG_FORMAT, datefmt=DATE_FORMAT))
+
+# logger = logging.getLogger("app")
+_logger = logging.getLogger("localrun")
+_logger.addHandler(stream_handler)
+
+logger = _logger
