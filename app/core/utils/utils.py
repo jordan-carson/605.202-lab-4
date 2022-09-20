@@ -1,6 +1,3 @@
-# 50, 1000, 2000, 5000 and 10000 integers
-# import numpy as np
-# from typing import Iterable, Iterator
 import random
 
 
@@ -86,3 +83,6 @@ def partition_quicksort(start, stop, array):
     # array = swap_positions(array, pivot, start)
     array[pivot], array[start] = array[start], array[pivot]
     return pivot
+
+
+
