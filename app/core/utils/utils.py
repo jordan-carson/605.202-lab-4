@@ -1,4 +1,5 @@
 import random
+# from app.core.utils import Je
 
 
 def print_array_as_string(array):
@@ -64,8 +65,8 @@ def read_input_file(filename):
 
 
 def create_output_file(filename: str, data: list):
-    with open(filename, "w") as fout:
-        fout.writelines(data)
+    with open(filename, "w") as file_out:
+        file_out.writelines(data)
 
 
 def swap_positions(arr, p1, p2):

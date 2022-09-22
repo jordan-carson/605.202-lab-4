@@ -1,25 +1,31 @@
 from typing import List, TypeVar
-import random
-from scipy import stats
+from app.core.exceptions import NaturalMergeSortError
 
-T = TypeVar("T")
+J = TypeVar("J")  # Always use J, instead of T :-D
 
 
-def recursive_merge_sort(input_list: List[T]) -> List[T]:
+def recursive_merge_sort(input_list: List[J]) -> List[J]:
     """
     Recursive Merge Sort
-    -----------------------------------------------
-    Merge Sort is a Divide and Conquer algorithm.
-    It divides the input array in two halves,
-    calls itself for the two halves and then merges the two sorted halves.
-    The merge function is used for merging two halves.
+
+    Merge Sort is a DC (Divide and Conquer) algorithm.
+    First, It divides the input array in two halves, calls itself for the two halves
+    and then merges the two sorted halves. The merge function is used for merging two halves.
 
     Attributes:
     - Time Complexity: O(N*Log N)
     - Space Complexity: O(N)
-    - Stable Sort
-    """
+    - Stable Sort, comparative to QuickSort for Lab 4.
 
+    Args:
+        input_list: list to be sorted
+
+    Returns:
+        sorted temporary list based on the input_list argument.
+    """
+    # if len(input_list) < 0:
+    #     raise NaturalMergeSortError(f"{recursive_merge_sort.__name__} - Length of input array is empty, "
+    #                                 f"size {len(input_list)}.")
     # Assigns the length of input list.
     size_of_input_list = len(input_list)
 
@@ -27,50 +33,77 @@ def recursive_merge_sort(input_list: List[T]) -> List[T]:
     temp_output_list = [None] * size_of_input_list
 
     # Sorts the input list.
-    recursive_sort(input_list, temp_output_list, 0, size_of_input_list - 1)
+    _sort_divided_sub_lists(input_list, temp_output_list, 0, size_of_input_list - 1)
 
     return temp_output_list
 
 
-def recursive_sort(input_list: List[T], temp_output_list: List[T], first_index: int, last_index: int) : #-> List[T]
+def _sort_divided_sub_lists(input_list: List[J], tmp_out_list: List[J], first_idx: int, last_idx: int) -> List[J]:
     """
-    This method recursively sorts the divided sublists
-    """
+    This method recursively sorts the divided sub-lists. This is a helper function to the main recursive_merge_sort
+    above.
 
-    # Stops the recursion if there is only one element in the sublists.
-    if first_index == last_index:
+    Args:
+        input_list:
+        tmp_out_list:
+        first_idx:
+        last_idx:
+
+    Returns:
+
+    """
+    # Stop recursion if there is only one element in the sub-lists
+    if first_idx == last_idx:
         return
 
     # Otherwise, calculates the middle point.
-    mid_index = (first_index + last_index) // 2
+    mid_point = (first_idx + last_idx) // 2
 
-    # Then, calls the two sublists recursively.
-    recursive_sort(input_list, temp_output_list, first_index, mid_index)
-    recursive_sort(input_list, temp_output_list, mid_index + 1, last_index)
+    # Next, recursively call the two sub-lists
+    _sort_divided_sub_lists(input_list, tmp_out_list, first_idx, mid_point)
+    _sort_divided_sub_lists(input_list, tmp_out_list, mid_point + 1, last_idx)
 
-    # Merges the two sublists.
-    merge_sublists(input_list, temp_output_list, first_index,
-                   mid_index, mid_index + 1, last_index)
+    # Next, merges the two sub-lists.
+    _merge_sub_lists(input_list, tmp_out_list, first_idx, mid_point, mid_point + 1, last_idx)
 
-    # Copies the sorted part into the temp_output_list.
-    copy_list(input_list, temp_output_list, first_index, last_index)
+    # Copies the sorted part into the tmp_out_list.
+    _copy_list(input_list, tmp_out_list, first_idx, last_idx)
 
 
-def merge_sublists(input_list: List[T], temp_output_list: List[T],
-                   first_start_index: int, first_end_index: int,
-                   second_start_index: int, second_end_index: int) -> List[T]:
+def _copy_list(input_list: List[J], tmp_list: List[J], start: int, end: int) -> List[J]:
     """
-        This method merges the two sorted sublists with three simple loops:
-        - If both sublists 1 and 2 have elements to be placed in the output merged list
-        - If sublists 1 has some elements left to be placed in the output merged list
-        - If sublists 2 has some elements left to be placed in the output merged list
+    Helper function to copy list to temp_output_list based on the first_index to the end_index.
+    Args:
+        input_list:
+        tmp_list:
+        start:
+        end:
 
-        e.g., sublist 1 [1, 3, 5, 7, 9]
-        e.g., sublist 2 [2, 4, 6, 8, 10, 12, 14]
+    Returns:
 
-        - First while loop generates: [1, 2, 3, 4, 5, 6 , 7, 8, 9, 10]
-        - Second while loop just passes, since no elements left from the first sublist.
-        - Third while loop generates: [1, 2, 3, 4, 5, 6 , 7, 8, 9, 10, 12, 14]
+    """
+    for i in range(start, end + 1):
+        input_list[i] = tmp_list[i]
+
+
+def _merge_sub_lists(input_list: List[J], tmp_out: List[J], first_start_index: int, first_end_index: int,
+                     second_start_index: int, second_end_index: int) -> List[J]:
+    """
+    This method merges two sorted sub-lists with three simple loops.
+
+    Args:
+        input_list:
+        tmp_out:
+        first_start_index:
+        first_end_index:
+        second_start_index:
+        second_end_index:
+
+    Returns:
+        Merged sub_lists, this is done in-place as there is no return
+
+    See Also:
+        recursive_merge_sort
 
     """
     i = first_start_index
@@ -79,25 +112,93 @@ def merge_sublists(input_list: List[T], temp_output_list: List[T],
 
     while i <= first_end_index and j <= second_end_index:
         if input_list[i] <= input_list[j]:
-            temp_output_list[k] = input_list[i]
+            tmp_out[k] = input_list[i]
             i += 1
         else:
-            temp_output_list[k] = input_list[j]
+            tmp_out[k] = input_list[j]
             j += 1
 
         k += 1
 
     while i <= first_end_index:
-        temp_output_list[k] = input_list[i]
+        tmp_out[k] = input_list[i]
         i += 1
         k += 1
 
     while j <= second_end_index:
-        temp_output_list[k] = input_list[j]
+        tmp_out[k] = input_list[j]
         j += 1
         k += 1
 
 
-def copy_list(input_list: List[T], temp_output_list: List[T], first_index: int, end_index: int) -> List[T]:
-    for i in range(first_index, end_index+1):
-        input_list[i] = temp_output_list[i]
+# class NaturalMergeSort:
+#     def __init__(self):
+#         """
+#         This will not be used as a class is not required.
+#         """
+#         pass
+#
+#     def recursive_merge_sort(self, input_list: List[J]) -> List[J]:
+#         """
+#         Recursive Merge Sort
+#
+#         Merge Sort is a DC (Divide and Conquer) algorithm.
+#         First, It divides the input array in two halves, calls itself for the two halves
+#         and then merges the two sorted halves. The merge function is used for merging two halves.
+#
+#         Attributes:
+#         - Time Complexity: O(N*Log N)
+#         - Space Complexity: O(N)
+#         - Stable Sort, comparative to QuickSort for Lab 4.
+#
+#         Args:
+#             input_list: list to be sorted
+#
+#         Returns:
+#             sorted temporary list based on the input_list argument.
+#         """
+#
+#         # Assigns the length of input list.
+#         size_of_input_list = len(input_list)
+#
+#         # Creates a new list for sorted output list.
+#         temp_output_list = [None] * size_of_input_list
+#
+#         # Sorts the input list.
+#         self._sort_sub_lists_recursively(input_list, temp_output_list, 0, size_of_input_list - 1)
+#
+#         return temp_output_list
+#
+#     def _sort_sub_lists_recursively(self, input_list: List[J], tmp_out_list: List[J], first_idx: int, last_idx: int):  # -> List[T]
+#         """
+#         This method recursively sorts the divided sub-lists. This is a helper function to the main recursive_merge_sort
+#         above.
+#
+#         Args:
+#             input_list:
+#             tmp_out_list:
+#             first_idx:
+#             last_idx:
+#
+#         Returns:
+#
+#         """
+#         # Stop recursion if there is only one element in the sub-lists
+#         if first_idx == last_idx:
+#             return
+#
+#         # Otherwise, calculates the middle point.
+#         mid_point = (first_idx + last_idx) // 2     # using floating point division to receive an integer
+#
+#         # Next, recursively call the two sub-lists
+#         self._sort_sub_lists_recursively(input_list, tmp_out_list, first_idx, mid_point)
+#         self._sort_sub_lists_recursively(input_list, tmp_out_list, mid_point + 1, last_idx)
+#
+#         # Next, merges the two sub-lists.
+#         _merge_sub_lists(input_list, tmp_out_list, first_idx, mid_point, mid_point + 1, last_idx)
+#
+#         # Copies the sorted part into the tmp_out_list.
+#         _copy_list(input_list, tmp_out_list, first_idx, last_idx)
+
+
+

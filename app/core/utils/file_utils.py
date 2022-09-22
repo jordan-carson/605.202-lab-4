@@ -4,6 +4,7 @@ from pathlib import Path
 
 SEED: int = os.getenv("SEED", 18)
 DATA_PATH = Path("/Users/jordancarson/Projects/605.202-lab-4/include").absolute()
+# PATH = Path(os.getcwd( = / )).absolute().parent
 
 
 def create_asc(n):
@@ -37,3 +38,16 @@ def writer(filename, inp):
         for i in inp:
             f.write("%s\n" % i)
     return True
+
+
+def read_files(path, prefix=None):
+    return [os.path.join(path, p) for p in os.listdir(path)] if not prefix \
+        else [os.path.join(path, p) for p in os.listdir(path) if p.startswith(prefix)]
+
+
+def read_file(file_path):
+    res = dict()
+    with open(file_path, "r",) as f:
+        res["data"] = f.readlines()
+    return res
+
