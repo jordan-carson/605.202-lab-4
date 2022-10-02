@@ -4,7 +4,7 @@ import pathlib
 import time
 
 import pandas as pd
-from app.core.models import natural_merge_sort, quicksort
+from app.core.models import natural_merge_sort, quicksort, insertion
 from app.core.services.generate_files import create_all
 from app.constants import file_path, data_dict, filter_data_dict
 from app.core.utils.logger import logger
@@ -37,8 +37,8 @@ def main():
 
     dico = {
         "quicksort": quicksort.quicksort_recursive2, # works perfectly
-        "mergesort": natural_merge_sort.recursive_merge_sort, # in test mode
-        # "insertion": insertion.insertion, # good
+        "mergesort": natural_merge_sort.recursive_merge_sort, # works
+        "insertion": insertion.insertion_sort, # good
         # "mergesort": mergesort.mergesort, # no
         # "heapsort": heapsort.heapsort,
     }

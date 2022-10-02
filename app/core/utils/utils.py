@@ -43,9 +43,9 @@ def partition(array, left_idx, right_idx, include_median=False):
     return tmp_idx + 1
 
 
-def swap(array, index1, index2, ret_val=None):
-    array[index1], array[index2] = array[index2], array[index1]
-    return None if not ret_val else array
+# def swap(array, index1, index2, ret_val=None):
+#     array[index1], array[index2] = array[index2], array[index1]
+#     return None if not ret_val else array
 
 
 def generate_data(size, reverse=False, shuffle_output=False):
@@ -74,8 +74,22 @@ def swap_positions(arr, p1, p2):
     return arr
 
 
-def partition_quicksort(start, stop, array):
-    pivot = start
+def swap(arr, a, b):
+    arr[b], arr[a] = arr[a], arr[b]
+
+
+def partition_quicksort(array, low, high,):
+
+    pivot = array[high]
+
+    b = low
+    for a in range(low, high):
+        if array[a] < pivot:
+            swap(array, a, b)
+            b += 1
+    swap(array, high, b)
+    return b
+
 
     for i in range(start+1, stop+1):
         if array[i] <= array[start]:

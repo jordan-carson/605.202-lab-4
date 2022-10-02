@@ -2,7 +2,7 @@ import logging
 import os
 from pathlib import Path, PosixPath
 
-current_path = Path(".").absolute()     # /Users/jordancarson/Projects/605.202-lab-4
+current_path = Path(r"/Users/jordancarson/Projects/605.202-lab-4").absolute()     # /Users/jordancarson/Projects/605.202-lab-4
 root = current_path
 if isinstance(root, PosixPath):
     file_path = os.path.join(root, "include", )

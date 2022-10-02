@@ -6,14 +6,16 @@ __doc__ = """
 """
 
 import random
-from app.core.exceptions import QuicksortEmptyArrayException, QuicksortRecursionException
+from app.core.exceptions import QuicksortEmptyArrayException, QuicksortRecursionException, QuicksortStoppingCaseException
+from app.core.models.insertion import insertion_sort
+
+sort_kind = [0, 1, 2, 3] # we have 4 sorting methods to perform based on the pivot
 
 
 def quicksort_recursive(array):
     """Sort the array by using quicksort."""
-
-    # if len(array) < 1:
-    #     raise QuicksortEmptyArrayException
+    if len(array) < 1:
+        raise QuicksortEmptyArrayException
 
     less = []
     equal = []
@@ -22,13 +24,6 @@ def quicksort_recursive(array):
     if len(array) > 1:
         pivot = array[0]    # version 1
         for x in array:
-            # equal.append(x) if x == pivot else
-            # if x == pivot:
-            #     equal.append(x)
-            # elif x < pivot:
-            #     less.append(x)
-            # else:
-            #     greater.append(x)
             if x < pivot:
                 less.append(x)
             elif x == pivot:
@@ -75,6 +70,60 @@ def concat(before, pivot, after):
 def concat_comprehension(before, pivot, after):
     return [_ for _ in before] + [pivot] + [_ for _ in after]
     # res.append(pivot)
+
+
+def quicksort_stopping_cases(array, low, high, stopping_case: int):
+    """
+    This solves the first two stopping cases, when the pivot is less than 50, or 100
+    Args:
+        array:
+        low:
+        high:
+        stopping_case:
+
+    Returns:
+
+    """
+    if stopping_case not in [100, 50]:
+        raise QuicksortStoppingCaseException("wrong stopping case")
+    pivot: int = array[low]
+    i = (high + 1)
+    j = high
+
+    while j > low:
+        if high - low <= stopping_case:
+            # use insertion sort to sort the array
+            array = insertion_sort(array)
+            break
+
+        elif array[j] >= pivot:
+            i -= 1
+            temp = array[i]
+            array[i] = array[j]
+            array[j] = temp
+            # swap the items..
+
+        j -= 1
+
+    temp = array[i - 1]
+    array[i - 1] = array[low]
+    array[low] = temp
+    return i - 1
+
+
+def median_of_three(array, low, high):
+    mid = (low + high - 1) // 2
+    a, b, c = array[low], array[mid], array[high-1]
+    if a <= b <= c:
+        return b, mid
+    if c <= b <= a:
+        return b, mid
+    if a <= c <= b:
+        return c, high-1
+    if b <= c <= a:
+        return c, high-1
+    return a, low
+
 
 
 # def quicksort_iterative(array):
