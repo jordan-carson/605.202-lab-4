@@ -4,7 +4,7 @@ from app.core.exceptions import NaturalMergeSortError
 J = TypeVar("J")  # Always use J, instead of T :-D
 
 
-def recursive_merge_sort(input_list: List[J]) -> List[J]:
+def recursive_merge_sort(input_list):
     """
     Recursive Merge Sort
 
@@ -38,20 +38,7 @@ def recursive_merge_sort(input_list: List[J]) -> List[J]:
     return temp_output_list
 
 
-def _sort_divided_sub_lists(input_list: List[J], tmp_out_list: List[J], first_idx: int, last_idx: int) -> List[J]:
-    """
-    This method recursively sorts the divided sub-lists. This is a helper function to the main recursive_merge_sort
-    above.
-
-    Args:
-        input_list:
-        tmp_out_list:
-        first_idx:
-        last_idx:
-
-    Returns:
-
-    """
+def _sort_divided_sub_lists(input_list, tmp_out_list, first_idx: int, last_idx: int):
     # Stop recursion if there is only one element in the sub-lists
     if first_idx == last_idx:
         return
@@ -70,24 +57,13 @@ def _sort_divided_sub_lists(input_list: List[J], tmp_out_list: List[J], first_id
     _copy_list(input_list, tmp_out_list, first_idx, last_idx)
 
 
-def _copy_list(input_list: List[J], tmp_list: List[J], start: int, end: int) -> List[J]:
-    """
-    Helper function to copy list to temp_output_list based on the first_index to the end_index.
-    Args:
-        input_list:
-        tmp_list:
-        start:
-        end:
-
-    Returns:
-
-    """
+def _copy_list(input_list, tmp_list, start: int, end: int):
     for i in range(start, end + 1):
         input_list[i] = tmp_list[i]
 
 
-def _merge_sub_lists(input_list: List[J], tmp_out: List[J], first_start_index: int, first_end_index: int,
-                     second_start_index: int, second_end_index: int) -> List[J]:
+def _merge_sub_lists(input_list, tmp_out, first_start_index: int, first_end_index: int,
+                     second_start_index: int, second_end_index: int):
     """
     This method merges two sorted sub-lists with three simple loops.
 

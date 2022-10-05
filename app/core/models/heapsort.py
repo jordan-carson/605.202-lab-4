@@ -10,7 +10,7 @@ def heapsort(array):
         tmp = array[0]
         array[0], array[i] = array[i], tmp
 
-    heapify(array, i, 0)
+        heapify(array, i, 0)
 
 
 def heapify(array, n, i):

@@ -126,6 +126,9 @@ def median_of_three(array, low, high):
 
 
 
+
+
+
 # def quicksort_iterative(array):
 #     left = 0
 #     right = len(array) - 1
