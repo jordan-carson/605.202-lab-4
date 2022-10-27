@@ -1,7 +1,9 @@
 /.idea/
 /.vscode/
 .venv/
-/include/exclude/**
+/exclude/**
 
 # remove all log files in github
 *.log
+logs
+
