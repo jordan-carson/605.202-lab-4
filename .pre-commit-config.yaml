@@ -12,3 +12,17 @@ repos:
       rev: 8f9b4931b9a28896fb43edccb23016a7540f5b82
       hooks:
         -   id: flake8
+  - repo: local
+    hooks:
+      - id: system
+        name: requirements-dev
+        entry: poetry export --format=requirements.txt --without-hashes --with dev --output=requirements-dev.txt
+        pass_filename: false
+        language: system
+  - repo: local
+    hooks:
+      - id: system
+        name: requirements
+        entry: poetry export --format=requirements.txt --without-hashes --output=requirements.txt
+        pass_filename: false
+        language: system

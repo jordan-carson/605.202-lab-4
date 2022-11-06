@@ -1,0 +1,6 @@
+*
+!app
+!include
+!poetry.lock
+!pyproject.toml
+!requirements.txt
