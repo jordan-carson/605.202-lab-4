@@ -1,9 +1,8 @@
-import logging
+# from app.tools.logger import logger
+import itertools
 import os.path
 
-from app.core.utils import file_utils as futil
-from app.core.utils.logger import logger
-import itertools
+from app.tools import file_utils as futil
 
 
 def generate_files(file_type: str, file_size: int) -> bool:
@@ -24,10 +23,10 @@ def generate_files(file_type: str, file_size: int) -> bool:
         'asc': futil.create_asc, 'dup': futil.create_dup, 'ran': futil.create_random, 'rev': futil.create_rev
     }[file_type.lower()]
 
-    file_name = f"{futil.DATA_PATH}/generated/{file_type.lower()}_{file_size}.txt"
+    file_name = f"{futil.DATA_PATH}/data/{file_type.lower()}_{file_size}.txt"
     futil.writer(file_name, data(file_size)) if not file_type == "ran" \
         else futil.writer(file_name, data(file_size, 0, file_size))
-    logger.info(f"Generating file: {os.path.basename(file_name)} Path: {file_name} Type:{file_type} Size: {file_size}")
+    print(f"Generating file: {os.path.basename(file_name)} Path: {file_name} Type:{file_type} Size: {file_size}")
     return os.path.exists(file_name)
 
 
@@ -38,10 +37,6 @@ def create_all():
     for _type, _size in itertools.product(_types, sizes,):
         generate_files(_type, _size)
 
-    logger.info("All data generated.")
+    print("All data data.")
 
     return
-
-
-if __name__ == '__main__':
-    create_all()

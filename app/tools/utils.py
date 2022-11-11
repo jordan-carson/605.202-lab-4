@@ -1,5 +1,6 @@
 import random
-# from app.core.utils import Je
+# from app.core.tools import Je
+import time
 
 
 def print_array_as_string(array):
@@ -91,13 +92,23 @@ def partition_quicksort(array, low, high,):
     return b
 
 
-    for i in range(start+1, stop+1):
-        if array[i] <= array[start]:
-            pivot += 1
-            array = swap_positions(array, i, pivot)
-    # array = swap_positions(array, pivot, start)
-    array[pivot], array[start] = array[start], array[pivot]
-    return pivot
+def concat(before, pivot, after):
+    new = []
+    for items in before:
+        new.append(items)
+    new = [item for item in before]
+    new.append(pivot)
+    for things in after:
+        new.append(things)
+    return new
 
 
+def concat_comprehension(before, pivot, after):
+    return [_ for _ in before] + [pivot] + [_ for _ in after]
 
+
+def human_readable_time(unix_epoch_nanoseconds: int) -> str:
+    from datetime import datetime
+    dt = datetime.fromtimestamp(unix_epoch_nanoseconds // 1000000000)
+    nano = "." + str(int(unix_epoch_nanoseconds % 1000000000)).zfill(9)
+    return dt.strftime('%Y-%m-%d %H:%M:%S') + nano

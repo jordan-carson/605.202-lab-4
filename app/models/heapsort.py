@@ -1,6 +1,3 @@
-from app.core.utils.utils import swap
-
-
 def heapsort(array):
 
     for i in range((len(array) // 2) - 1, 0, -1):
@@ -29,4 +26,3 @@ def heapify(array, n, i):
         array[largest], array[i] = array[i], array[largest]
 
     heapify(array, n, largest)
-

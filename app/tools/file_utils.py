@@ -3,7 +3,7 @@ import random
 from pathlib import Path
 
 SEED: int = os.getenv("SEED", 18)
-DATA_PATH = Path("/Users/jordancarson/Projects/605.202-lab-4/include").absolute()
+DATA_PATH = Path("/include").absolute()
 # PATH = Path(os.getcwd( = / )).absolute().parent
 
 
@@ -33,7 +33,7 @@ def create_dup(n):
     return create_random(int(n // 2), int(n // 2), n) + create_random(int(n // 2), int(n // 2), n)
 
 
-def writer(filename, inp):
+def writer(filename, inp: list):
     with open(filename, 'w') as f:
         for i in inp:
             f.write("%s\n" % i)
@@ -50,4 +50,3 @@ def read_file(file_path):
     with open(file_path, "r",) as f:
         res["data"] = f.readlines()
     return res
-
