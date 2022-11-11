@@ -1,14 +1,10 @@
 FROM python:3.9-slim
+ENV WORKDIR=/usr
+WORKDIR $WORKDIR
+COPY app poetry.lock pyproject.toml requirements.txt $WORKDIR/
 
-WORKDIR /usr
+RUN pip install --upgrade pip --no-cache-dir && \
+     pip install poetry --no-cache-dir && \
+     poetry run pip install -r requirements.txt
 
-COPY poetry.lock ./
-COPY pyproject.toml ./
-
-RUN pip install --upgrade pip --no-cache-dir
-RUN pip install poetry --no-cache-dir
-RUN poetry install -v --no-cache
-
-COPY app ./
-
-CMD python -m app.main
+CMD python -m main
